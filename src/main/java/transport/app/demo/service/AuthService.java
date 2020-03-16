@@ -14,8 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import transport.app.demo.exceptions.AppException;
 import transport.app.demo.exceptions.UserNotFoundException;
-import transport.app.demo.exceptions.UserNotFoundResponse;
-import transport.app.demo.exceptions.UsernameAlreadyExistsException;
 import transport.app.demo.model.user.EmailVerificationStatus;
 import transport.app.demo.model.user.Role;
 import transport.app.demo.model.user.User;
