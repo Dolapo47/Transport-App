@@ -1,5 +1,7 @@
 package transport.app.demo;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +15,11 @@ import java.util.TimeZone;
 
 @SpringBootApplication
 public class DemoApplication {
+    @Value("${spring.mail.username}")
+    private String email;
+
+    @Value("${spring.mail.password}")
+    private String password;
 
     @Bean
     BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -25,8 +32,8 @@ public class DemoApplication {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("");
-        mailSender.setPassword("");
+        mailSender.setUsername(email);
+        mailSender.setPassword(password);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
@@ -42,8 +49,12 @@ public class DemoApplication {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
-
 }

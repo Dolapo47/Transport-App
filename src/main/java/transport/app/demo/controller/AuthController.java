@@ -1,43 +1,36 @@
 package transport.app.demo.controller;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import transport.app.demo.model.user.User;
-import transport.app.demo.payload.JwtLoginSuccessResponse;
 import transport.app.demo.payload.LoginRequest;
-import transport.app.demo.security.JwtTokenProvider;
+import transport.app.demo.payload.auth.SignUpRequest;
+import transport.app.demo.responses.Response;
 import transport.app.demo.service.MapValidationErrorService;
 import transport.app.demo.service.AuthService;
 import transport.app.demo.validator.UserValidator;
-import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import static transport.app.demo.security.SecurityConstant.TOKEN_PREFIX;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
     private AuthService authService;
-    @Autowired
-    private UserValidator userValidator;
-    @Autowired
     private MapValidationErrorService mapValidationErrorService;
+    private ModelMapper modelMapper;
+
     @Autowired
-    private AuthenticationManager authenticationmanager;
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    public AuthController(AuthService authService, MapValidationErrorService mapValidationErrorService, ModelMapper modelMapper) {
+        this.authService = authService;
+        this.mapValidationErrorService = mapValidationErrorService;
+        this.modelMapper = modelMapper;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?>authenticateUser(@Valid @RequestBody LoginRequest loginRequest,
@@ -48,13 +41,18 @@ public class AuthController {
         return new ResponseEntity<>("Successful", HttpStatus.OK);
     }
     @PostMapping("/register")
-    public ResponseEntity<?> registerUSer(@Valid @RequestBody User user, BindingResult result){
-        //validate passwords match
+    public ResponseEntity<?> registerUSer(@Valid @RequestBody SignUpRequest signUpRequest){
+        authService.saveUser(modelMapper.map(signUpRequest, User.class));
+        Response<String> response = new Response<>(HttpStatus.CREATED);
+        response.setMessage("You have successfully signed up with Transport-App");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 
-        userValidator.validate(user, result);
-        ResponseEntity<?>errorMap = mapValidationErrorService.MapValidationService(result);
-        if(errorMap != null) return errorMap;
-        User newUser = authService.saveUser(user);
-        return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
+    @PatchMapping("/verifyEmail/{token}")
+    public ResponseEntity<Response<String>> verifyUser(@PathVariable String token){
+        authService.verifyUser(token);
+        Response<String> response = new Response<>(HttpStatus.ACCEPTED);
+        response.setMessage("You are now a verified user of Transport-App");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }
