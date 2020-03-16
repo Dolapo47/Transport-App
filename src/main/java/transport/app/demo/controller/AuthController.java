@@ -20,6 +20,7 @@ import transport.app.demo.service.AuthService;
 import transport.app.demo.validator.UserValidator;
 import org.springframework.security.core.Authentication;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import static transport.app.demo.security.SecurityConstant.TOKEN_PREFIX;
 
@@ -39,22 +40,13 @@ public class AuthController {
     private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<?>authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
+    public ResponseEntity<?>authenticateUser(@Valid @RequestBody LoginRequest loginRequest,
+                                             BindingResult result, HttpServletResponse response){
         ResponseEntity<?>errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
-
-        Authentication authentication = authenticationmanager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
-        System.out.println("hi");
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = TOKEN_PREFIX+jwtTokenProvider.generateToken(loginRequest.getUsername());
-        return ResponseEntity.ok(new JwtLoginSuccessResponse(true, jwt));
+        authService.signInUser(loginRequest.getUsername(), loginRequest.getPassword(), response);
+        return new ResponseEntity<>("Successful", HttpStatus.OK);
     }
-
     @PostMapping("/register")
     public ResponseEntity<?> registerUSer(@Valid @RequestBody User user, BindingResult result){
         //validate passwords match
@@ -62,7 +54,6 @@ public class AuthController {
         userValidator.validate(user, result);
         ResponseEntity<?>errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
-
         User newUser = authService.saveUser(user);
         return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
     }

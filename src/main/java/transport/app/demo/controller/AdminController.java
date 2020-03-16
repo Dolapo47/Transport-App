@@ -15,12 +15,4 @@ public class AdminController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
-//    @PatchMapping("/users")
-//    public ResponseEntity<?> updateProjectTask(@Valid @RequestBody User user, BindingResult result){
-//        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-//        if (errorMap != null) return errorMap;
-//
-//        User updatedUser = userService.createAdmin(user);
-//        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-//    }
 }

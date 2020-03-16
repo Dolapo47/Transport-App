@@ -7,5 +7,6 @@ import transport.app.demo.model.user.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
     User findByUsername(String username);
+    User findByEmailVerificationToken(String token);
     User getById(Long id);
 }

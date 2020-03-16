@@ -37,6 +37,12 @@ public class User extends DateAudit {
     @JsonIgnore
     private String confirmPassword;
 
+    @JsonIgnore
+    private String emailVerificationToken;
+
+    @JsonIgnore
+    private EmailVerificationStatus emailVerificationStatus = EmailVerificationStatus.UNVERIFIED;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     List<Role> roles;
@@ -98,5 +104,37 @@ public class User extends DateAudit {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public String getEmailVerificationToken() {
+        return emailVerificationToken;
+    }
+
+    public void setEmailVerificationToken(String emailVerificationToken) {
+        this.emailVerificationToken = emailVerificationToken;
+    }
+
+    public EmailVerificationStatus getEmailVerificationStatus() {
+        return emailVerificationStatus;
+    }
+
+    public void setEmailVerificationStatus(EmailVerificationStatus emailVerificationStatus) {
+        this.emailVerificationStatus = emailVerificationStatus;
+    }
+
+    public List<Booking> getBooking() {
+        return booking;
+    }
+
+    public void setBooking(List<Booking> booking) {
+        this.booking = booking;
+    }
+
+    public List<Complaint> getComplaint() {
+        return complaint;
+    }
+
+    public void setComplaint(List<Complaint> complaint) {
+        this.complaint = complaint;
     }
 }
