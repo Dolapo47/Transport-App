@@ -62,7 +62,7 @@ public class AuthService {
 
         String url = "http://localhost:"+ port + "/api/auth/verifyEmail/" + token;
         String message =
-                "Hey" + newUser.getUsername() + ",\n" +
+                "Hey " + newUser.getUsername() + ",\n" +
                         "You just created an account with The Transport-App \n" +
                         "You are required to use the following link to verify your account\n" + url + "\n"  +
                         " –Please disregard if it wasn't you";
@@ -92,5 +92,38 @@ public class AuthService {
         System.out.println(user);
         user.setEmailVerificationStatus(EmailVerificationStatus.VERIFIED);
         userRepository.save(user);
+    }
+
+    public void resetPassword(String username){
+        User user = userRepository.findByUsername(username);
+        if(user == null){
+            throw new AppException("Please register; user not found", HttpStatus.NOT_FOUND);
+        }
+        String token = jwtTokenProvider.createToken(user.getId(), user.getUsername(), user.getRoles(), 300000);
+        String url = "http://localhost:"+ port + "/api/auth/password-reset/" + user.getId() + token;
+
+        String message =
+                "Hey " + user.getUsername() + ",\n" +
+                        "You can use the following link to reset your password:\n" + url + "\n" +
+                        "If you don’t use this link within 1 hour, it will expire.\n" +
+                        " –Please ignore if it wasn't initiated by you";
+        emailSender.sendEmail(user.getUsername(), "Transport-App Reset Password", message);
+    }
+
+    public void setNewPassword(long id, String newPassword, String token){
+        if(jwtTokenProvider.isTokenExpired(token)){
+            throw new AppException("The token is expired", HttpStatus.FORBIDDEN);
+        }
+        String username = jwtTokenProvider.getUsername(token);
+        if(!userRepository.existsByUsername(username)){
+            throw new AppException("there has been a compromise", HttpStatus.BAD_REQUEST);
+        }
+        User user = userRepository.getById(id);
+        if(user != null){
+            user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+            userRepository.save(user);
+        }else {
+            throw new AppException("User not found", HttpStatus.NOT_FOUND);
+        }
     }
 }

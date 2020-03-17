@@ -2,7 +2,6 @@ package transport.app.demo.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 import transport.app.demo.model.user.Role;
@@ -76,9 +75,15 @@ public class JwtTokenProvider {
 
     public String getUsername(String token){
         Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
-//        String id = (String)claims.get("id");
         return claims.getSubject();
     }
 
+    private Claims getAllClaims(String token) {
+        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+    }
+
+    public Boolean isTokenExpired(String token) {
+        return getAllClaims(token).getExpiration().before(new Date());
+    }
 }
 
