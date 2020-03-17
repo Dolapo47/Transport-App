@@ -1,6 +1,7 @@
 package transport.app.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import transport.app.demo.model.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -22,10 +23,13 @@ public class Trip {
     @NotBlank(message = "Arrival is required")
     private String arrival;
 
-
     private Date leaveDate;
 
-    private boolean isComplete;
+    private boolean isComplete = false;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
@@ -65,7 +69,7 @@ public class Trip {
     }
 
     public void setArrival(String arrival) {
-        arrival = arrival;
+        this.arrival = arrival;
     }
 
     public Date getLeaveDate() {
@@ -110,5 +114,13 @@ public class Trip {
 
     public void setBus(Bus bus) {
         this.bus = bus;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

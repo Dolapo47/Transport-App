@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class SecurityConstant {
     public static final String SIGN_UP_URL = "/api/auth/**";
-    public static final String ADMIN_URL = "/api/admin/**";
+    public static final String TRIP_URL = "/api/trip/**";
     public static final String SECRET = "SecretKeyToGenJWTs";
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
