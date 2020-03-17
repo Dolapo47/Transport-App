@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import transport.app.demo.model.user.Role;
 import transport.app.demo.service.UserDetailsServiceImpl;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,6 +83,15 @@ public class JwtTokenProvider {
 
     public Boolean isTokenExpired(String token) {
         return getAllClaims(token).getExpiration().before(new Date());
+    }
+
+    public String resolveToken(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")){
+            return token.substring(7, token.length());
+
+        }
+        return null;
     }
 }
 

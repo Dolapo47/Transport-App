@@ -15,8 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import transport.app.demo.service.UserDetailsServiceImpl;
 
-import static transport.app.demo.security.SecurityConstant.ADMIN_URL;
-import static transport.app.demo.security.SecurityConstant.SIGN_UP_URL;
+import static transport.app.demo.security.SecurityConstant.*;
 
 @Configuration
 @EnableWebSecurity

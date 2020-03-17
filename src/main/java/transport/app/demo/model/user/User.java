@@ -6,6 +6,7 @@ import org.hibernate.annotations.FetchMode;
 import transport.app.demo.model.Booking;
 import transport.app.demo.model.Complaint;
 import transport.app.demo.model.DateAudit;
+import transport.app.demo.model.Trip;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -51,6 +52,11 @@ public class User extends DateAudit {
     @Column(name = "user_id")
     @JsonIgnore
     private List<Booking> booking = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
+    @Column(name = "user_id")
+    @JsonIgnore
+    private List<Trip> trip = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
     @Column(name = "user_id")
