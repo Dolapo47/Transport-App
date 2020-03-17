@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import transport.app.demo.model.user.Role;
 import transport.app.demo.model.user.User;
 import transport.app.demo.payload.auth.NewPasswordRequest;
 import transport.app.demo.payload.auth.PasswordReset;
@@ -64,12 +65,21 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PatchMapping("set-new-password")
+    @PatchMapping("/set-new-password")
     public ResponseEntity<Response<String>>setNewPassword(@RequestParam("id") Long id, @Valid @RequestBody NewPasswordRequest newPasswordRequest,
                                                           @RequestParam String token){
         authService.setNewPassword(id, newPasswordRequest.getNewPassword(), token);
         Response<String> response = new Response<>(HttpStatus.OK);
         response.setMessage("You have done a password reset");
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PatchMapping("/user/{id}")
+    public ResponseEntity<Response<User>> changeUserRole(@PathVariable Long id){
+        User user = authService.createAdminUser(id);
+        Response<User> response = new Response<>(HttpStatus.ACCEPTED);
+        response.setMessage("User role successfully changed to admin");
+        response.setData(user);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }

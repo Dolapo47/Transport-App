@@ -22,7 +22,9 @@ import transport.app.demo.security.JwtTokenProvider;
 import transport.app.demo.util.EmailSender;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static transport.app.demo.security.SecurityConstant.EXPIRATION_TIME;
 
@@ -91,6 +93,7 @@ public class AuthService {
         }
         System.out.println(user);
         user.setEmailVerificationStatus(EmailVerificationStatus.VERIFIED);
+        user.setEmailVerificationToken("");
         userRepository.save(user);
     }
 
@@ -125,5 +128,16 @@ public class AuthService {
         }else {
             throw new AppException("User not found", HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public User createAdminUser(Long id){
+        User oldUser = userRepository.getById(id);
+        if(oldUser == null){
+            throw new AppException("User not found", HttpStatus.NOT_FOUND);
+        }
+        List<Role> roles = new ArrayList<>(Collections.singletonList(Role.ROLE_ADMIN));
+        oldUser.setRoles(roles);
+        return userRepository.save(oldUser);
     }
 }

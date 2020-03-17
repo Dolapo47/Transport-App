@@ -16,9 +16,7 @@ import static transport.app.demo.security.SecurityConstant.SECRET;
 
 @Component
 public class JwtTokenProvider {
-    //generate the token
-    //validate the token
-    //get the user id from the token
+
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
