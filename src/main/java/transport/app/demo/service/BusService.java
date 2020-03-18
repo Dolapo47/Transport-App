@@ -36,7 +36,7 @@ public class BusService {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Bus createBus(Bus bus, HttpServletRequest request){
+    public void createBus(Bus bus, HttpServletRequest request){
         String token = jwtTokenProvider.resolveToken(request);
         String username = jwtTokenProvider.getUsername(token);
         User user = userRepository.findByUsername(username);
@@ -46,13 +46,16 @@ public class BusService {
         newBus.setCapacity(bus.getCapacity());
         newBus.setPlateNo(bus.getPlateNo());
         newBus.setUser(user);
-        return busRepository.save(newBus);
+        busRepository.save(newBus);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ArrayList<Bus> viewBus(){
         ArrayList<Bus> buses = new ArrayList<>();
         buses = (ArrayList<Bus>) busRepository.findAll();
+        if(buses.size() < 1){
+            throw new AppException("No bus found", HttpStatus.NOT_FOUND);
+        }
         return buses;
     }
 
@@ -69,9 +72,9 @@ public class BusService {
             throw new AppException("Bus not found", HttpStatus.NOT_FOUND);
         }
 
-//        if(foundBus.isPresent() || foundBus.get().getUser().getId() != user.getId()){
-//            throw new AppException("You cannot delete this bus", HttpStatus.BAD_REQUEST);
-//        }
+        if(foundBus.get().getUser().getId() != user.getId()){
+            throw new AppException("You cannot delete this bus", HttpStatus.BAD_REQUEST);
+        }
 
         busRepository.delete(foundBus.get());
     }

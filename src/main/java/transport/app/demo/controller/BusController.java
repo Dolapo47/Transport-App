@@ -22,23 +22,23 @@ public class BusController {
         this.busService = busService;
     }
 
-    @PostMapping("/bus")
+    @PostMapping("/create")
     public ResponseEntity<?> createBus(@Valid @RequestBody Bus bus, HttpServletRequest request){
         busService.createBus(bus, request);
         Response<Bus> response = new Response<>(HttpStatus.CREATED);
-        return new ResponseEntity(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/bus")
+    @GetMapping("/view-all")
     public ResponseEntity<?> viewBus(){
-        ArrayList buses = busService.viewBus();
+        ArrayList<Bus> buses = busService.viewBus();
         Response<ArrayList<Bus>> response = new Response<>(HttpStatus.OK);
         response.setMessage("Successfully retrieved all buses");
         response.setData(buses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{busId}")
+    @DeleteMapping("/view/{busId}")
     public ResponseEntity<?> deleteBus(@PathVariable Long busId, HttpServletRequest request){
         busService.deleteBus(busId, request);
         Response<ArrayList<Bus>> response = new Response<>(HttpStatus.OK);
