@@ -38,7 +38,7 @@ public class BusController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/bus/{busId}")
+    @DeleteMapping("/{busId}")
     public ResponseEntity<?> deleteBus(@PathVariable Long busId, HttpServletRequest request){
         busService.deleteBus(busId, request);
         Response<ArrayList<Bus>> response = new Response<>(HttpStatus.OK);

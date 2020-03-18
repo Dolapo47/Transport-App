@@ -69,9 +69,9 @@ public class BusService {
             throw new AppException("Bus not found", HttpStatus.NOT_FOUND);
         }
 
-        if(foundBus.isPresent() || foundBus.get().getUser().getId() != user.getId()){
-            throw new AppException("You cannot delete this bus", HttpStatus.BAD_REQUEST);
-        }
+//        if(foundBus.isPresent() || foundBus.get().getUser().getId() != user.getId()){
+//            throw new AppException("You cannot delete this bus", HttpStatus.BAD_REQUEST);
+//        }
 
         busRepository.delete(foundBus.get());
     }
