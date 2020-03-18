@@ -3,10 +3,7 @@ package transport.app.demo.model.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import transport.app.demo.model.Booking;
-import transport.app.demo.model.Complaint;
-import transport.app.demo.model.DateAudit;
-import transport.app.demo.model.Trip;
+import transport.app.demo.model.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -48,22 +45,42 @@ public class User extends DateAudit {
     @Fetch(value = FetchMode.SUBSELECT)
     List<Role> roles;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
-    @Column(name = "user_id")
+    @OneToMany(cascade = CascadeType.REFRESH,  mappedBy = "user", orphanRemoval = true)
+//    @Column(name = "user_id")
     @JsonIgnore
     private List<Booking> booking = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
-    @Column(name = "user_id")
+    @OneToMany(cascade = CascadeType.REFRESH,  mappedBy = "user", orphanRemoval = true)
+//    @Column(name = "user_id")
     @JsonIgnore
     private List<Trip> trip = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
-    @Column(name = "user_id")
+    @OneToMany(cascade = CascadeType.REFRESH,  mappedBy = "user", orphanRemoval = true)
+//    @Column(name = "user_id")
     @JsonIgnore
     private List <Complaint> complaint = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "user", orphanRemoval = true)
+    @JsonIgnore
+    private List <Bus> bus = new ArrayList<>();
+
     public User() {
+    }
+
+    public List<Trip> getTrip() {
+        return trip;
+    }
+
+    public void setTrip(List<Trip> trip) {
+        this.trip = trip;
+    }
+
+    public List<Bus> getBus() {
+        return bus;
+    }
+
+    public void setBus(List<Bus> bus) {
+        this.bus = bus;
     }
 
     public long getId() {
