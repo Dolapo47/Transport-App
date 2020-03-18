@@ -11,7 +11,6 @@ import transport.app.demo.repository.UserRepository;
 import transport.app.demo.security.JwtTokenProvider;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @Service
 public class TripService {
