@@ -7,31 +7,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import transport.app.demo.model.Bus;
 import transport.app.demo.model.Trip;
 import transport.app.demo.payload.trip.NewTrip;
+import transport.app.demo.repository.BusRepository;
 import transport.app.demo.responses.Response;
-import transport.app.demo.service.TripService;
+import transport.app.demo.service.BusService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/trip")
-public class TripController {
-
-    private TripService tripService;
+@RequestMapping("/api/bus")
+public class BusController {
+    private BusService busService;
 
     @Autowired
-    public TripController(TripService tripService) {
-        this.tripService = tripService;
+    public BusController(BusService busService) {
+        this.busService = busService;
     }
 
-    @PostMapping("/create-trip")
-    public ResponseEntity<?>createTrip(@Valid @RequestBody NewTrip newTrip, HttpServletRequest request){
-        Trip trip = tripService.createTrip(newTrip, request);
-        Response<Trip> response = new Response<>(HttpStatus.CREATED);
-        response.setMessage("Trip successfully created");
-        response.setData(trip);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    @PostMapping("/create-bus")
+    public ResponseEntity<?> createBus(@Valid @RequestBody Bus bus, HttpServletRequest request){
+        busService.createBus(bus, request);
+        Response<Bus> response = new Response<>(HttpStatus.CREATED);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 }

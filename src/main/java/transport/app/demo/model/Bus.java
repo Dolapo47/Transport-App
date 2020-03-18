@@ -1,9 +1,11 @@
 package transport.app.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import transport.app.demo.model.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -15,23 +17,36 @@ public class Bus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    private String Brand;
+    @NotBlank(message = "Brand of bus is required")
+    private String brand;
 
-    @NotBlank
-    private int capacity;
+    @NotNull(message = "Capacity of bus is required")
+    private Integer capacity;
 
-    @NotBlank
+    @NotBlank(message = "Plate number of bus is required")
     private String plateNo;
 
-    private boolean onTrip;
+    private boolean onTrip = false;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "bus", orphanRemoval = true)
     @Column(name = "bus_id")
     @JsonIgnore
     private List <Trip> trip = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
+
     public Bus() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {
@@ -43,18 +58,18 @@ public class Bus {
     }
 
     public String getBrand() {
-        return Brand;
+        return brand;
     }
 
     public void setBrand(String brand) {
-        Brand = brand;
+        this.brand = brand;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 

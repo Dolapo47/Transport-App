@@ -14,6 +14,7 @@ public class Booking {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 

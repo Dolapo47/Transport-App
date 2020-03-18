@@ -28,6 +28,7 @@ public class Trip {
     private boolean isComplete = false;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
@@ -40,7 +41,7 @@ public class Trip {
     @JsonIgnore
     private List<Booking> booking = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "trip", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "trip", orphanRemoval = true)
     @Column(name = "trip_id")
     @JsonIgnore
     private List <Complaint> complaint = new ArrayList<>();
