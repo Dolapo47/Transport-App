@@ -42,6 +42,24 @@ public class TripController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @GetMapping("/view-available-trips")
+    public ResponseEntity<?>viewAvailableTrips(){
+        ArrayList<Trip> trips = tripService.viewAvailableTrips();
+        Response<ArrayList<Trip>> response = new Response<>(HttpStatus.OK);
+        response.setMessage("Retrieved all available trips");
+        response.setData(trips);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/view-unavailable-trips")
+    public ResponseEntity<?>viewUnavailableTrips(){
+        ArrayList<Trip> trips = tripService.viewUnAvailableTrips();
+        Response<ArrayList<Trip>> response = new Response<>(HttpStatus.OK);
+        response.setMessage("Retrieved all trips");
+        response.setData(trips);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
     @PatchMapping("/add/{tripId}/bus/{busId}")
     public ResponseEntity<?> addBusToTrip(@PathVariable Long tripId, @PathVariable Long busId, HttpServletRequest request){
         tripService.addBusToTrip(tripId, busId);

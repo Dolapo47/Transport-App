@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import transport.app.demo.controller.TripController;
 import transport.app.demo.exceptions.AppException;
 import transport.app.demo.model.Bus;
 import transport.app.demo.model.Trip;
@@ -97,12 +96,33 @@ public class TripService {
             tripRepository.save(foundTrip.get());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ArrayList<Trip> viewAllTrips(){
-        ArrayList trips = new ArrayList();
+        ArrayList trips;
         trips = (ArrayList) tripRepository.findAll();
         if(trips.size() < 1){
             throw new AppException("No trip found", HttpStatus.NOT_FOUND);
         }
         return trips;
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ArrayList viewAvailableTrips(){
+    ArrayList completedTrips;
+    completedTrips = tripRepository.findAllByComplete(false);
+    if(completedTrips.size() < 1){
+        throw new AppException("No available trips found", HttpStatus.NOT_FOUND);
+    }
+    return completedTrips;
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ArrayList viewUnAvailableTrips(){
+        ArrayList incompleteTrips;
+        incompleteTrips = tripRepository.findAllByComplete(false);
+        if(incompleteTrips.size() < 1){
+            throw new AppException("No unavailable trips found", HttpStatus.NOT_FOUND);
+        }
+        return incompleteTrips;
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import transport.app.demo.model.user.Role;
 import transport.app.demo.model.user.User;
 import transport.app.demo.payload.auth.NewPasswordRequest;
 import transport.app.demo.payload.auth.PasswordReset;

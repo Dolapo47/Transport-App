@@ -25,6 +25,8 @@ public class Trip {
 
     private Date leaveDate;
 
+    private Double price;
+
     private boolean isComplete = false;
 
     @ManyToOne(fetch = FetchType.EAGER)
