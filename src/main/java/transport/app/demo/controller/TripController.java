@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import transport.app.demo.model.Trip;
 import transport.app.demo.payload.trip.NewTrip;
 import transport.app.demo.responses.Response;
-import transport.app.demo.service.BusService;
 import transport.app.demo.service.TripService;
 
 import javax.servlet.http.HttpServletRequest;
