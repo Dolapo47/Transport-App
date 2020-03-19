@@ -46,7 +46,23 @@ public class Trip {
     @JsonIgnore
     private List <Complaint> complaint = new ArrayList<>();
 
+    @ManyToMany(cascade=CascadeType.MERGE)
+    @JoinTable(
+            name="bus_trip",
+            joinColumns={@JoinColumn(name="trip_id", referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="bus_id", referencedColumnName="id")})
+    @JsonIgnore
+    private List<Bus> newBus;
+
     public Trip() {
+    }
+
+    public List<Bus> getNewBus() {
+        return newBus;
+    }
+
+    public void setNewBus(List<Bus> newBus) {
+        this.newBus = newBus;
     }
 
     public Long getId() {

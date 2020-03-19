@@ -75,7 +75,22 @@ public class BusService {
         if(foundBus.get().getUser().getId() != user.getId()){
             throw new AppException("You cannot delete this bus", HttpStatus.BAD_REQUEST);
         }
-
         busRepository.delete(foundBus.get());
+    }
+
+    public ArrayList<Bus> viewAllAvailableBus(){
+        ArrayList<Bus> availableBuses = busRepository.findBusesByOnTrip(false);
+        if(availableBuses.size() < 1){
+            throw new AppException("No bus found", HttpStatus.NOT_FOUND);
+        }
+        return availableBuses;
+    }
+
+    public ArrayList<Bus> viewAllUnavailableBus(){
+        ArrayList<Bus> unAvailableBuses = busRepository.findBusesByOnTrip(true);
+        if(unAvailableBuses.size() < 1){
+            throw new AppException("No bus found", HttpStatus.NOT_FOUND);
+        }
+        return unAvailableBuses;
     }
 }

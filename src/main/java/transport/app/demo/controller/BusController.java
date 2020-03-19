@@ -38,6 +38,24 @@ public class BusController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/viewAvailable")
+    public ResponseEntity<?> viewAvailable(){
+        ArrayList<Bus> buses = busService.viewAllAvailableBus();
+        Response<ArrayList<Bus>> response = new Response<>(HttpStatus.OK);
+        response.setMessage("Successfully retrieved all buses");
+        response.setData(buses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/viewUnavailable")
+    public ResponseEntity<?> viewUnavailable(){
+        ArrayList<Bus> buses = busService.viewAllUnavailableBus();
+        Response<ArrayList<Bus>> response = new Response<>(HttpStatus.OK);
+        response.setMessage("Successfully retrieved all buses");
+        response.setData(buses);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @DeleteMapping("/view/{busId}")
     public ResponseEntity<?> deleteBus(@PathVariable Long busId, HttpServletRequest request){
         busService.deleteBus(busId, request);
