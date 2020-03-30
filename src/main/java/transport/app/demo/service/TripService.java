@@ -73,7 +73,7 @@ public class TripService {
         }
         else{
             foundBus.get().setOnTrip(true);
-            foundTrip.get().setBus(foundBus.get());
+            // add bus to trip
         }
         tripRepository.save(foundTrip.get());
     }
@@ -94,7 +94,7 @@ public class TripService {
             throw new AppException("bus is not assigned to a trip", HttpStatus.BAD_REQUEST);
         }else{
             foundBus.get().setOnTrip(false);
-            foundTrip.get().setBus(foundBus.get());
+//            foundTrip.get().setBus(foundBus.get());
         }
             tripRepository.save(foundTrip.get());
     }

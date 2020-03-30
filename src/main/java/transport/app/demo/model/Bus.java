@@ -28,10 +28,8 @@ public class Bus {
 
     private boolean onTrip = false;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "bus", orphanRemoval = true)
-    @Column(name = "bus_id")
-    @JsonIgnore
-    private List <Trip> trip = new ArrayList<>();
+    @ManyToMany(mappedBy = "bus")
+    private List<Trip> trip = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

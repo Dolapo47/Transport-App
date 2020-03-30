@@ -33,14 +33,13 @@ public class Trip {
 
     private boolean complete = false;
 
+    @ManyToMany
+    private List<Bus> bus = new ArrayList<Bus>();
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Bus bus;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "trip", orphanRemoval = true)
     @Column(name = "trip_id")
@@ -51,14 +50,6 @@ public class Trip {
     @Column(name = "trip_id")
     @JsonIgnore
     private List <Complaint> complaint = new ArrayList<>();
-
-    @ManyToMany(cascade=CascadeType.MERGE)
-    @JoinTable(
-            name="bus_trip",
-            joinColumns={@JoinColumn(name="trip_id", referencedColumnName="id")},
-            inverseJoinColumns={@JoinColumn(name="bus_id", referencedColumnName="id")})
-    @JsonIgnore
-    private List<Bus> newBus;
 
     public Trip() {
     }
@@ -71,12 +62,12 @@ public class Trip {
         return price;
     }
 
-    public List<Bus> getNewBus() {
-        return newBus;
+    public List<Bus> getBus() {
+        return bus;
     }
 
-    public void setNewBus(List<Bus> newBus) {
-        this.newBus = newBus;
+    public void setBus(List<Bus> bus) {
+        this.bus = bus;
     }
 
     public Long getId() {
@@ -137,14 +128,6 @@ public class Trip {
 
     public void setLeave(String leave) {
         this.leave = leave;
-    }
-
-    public Bus getBus() {
-        return bus;
-    }
-
-    public void setBus(Bus bus) {
-        this.bus = bus;
     }
 
     public User getUser() {
