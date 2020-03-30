@@ -24,9 +24,6 @@ public class Booking {
     @JsonIgnore
     private Trip trip;
 
-    @NotEmpty(message = "price is needed")
-    @NotNull
-    private double price = 0.00;
 
     public Booking() {
     }
@@ -53,13 +50,5 @@ public class Booking {
 
     public void setTrip(Trip trip) {
         this.trip = trip;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 }
