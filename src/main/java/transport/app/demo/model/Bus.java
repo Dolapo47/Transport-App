@@ -28,8 +28,9 @@ public class Bus {
 
     private boolean onTrip = false;
 
-    @ManyToMany(mappedBy = "bus")
-    private List<Trip> trip = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.REFRESH,  mappedBy = "bus", orphanRemoval = true)
+    @JsonIgnore
+    private List <Trip> trip = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -37,6 +38,14 @@ public class Bus {
     private User user;
 
     public Bus() {
+    }
+
+    public List<Trip> getTrip() {
+        return trip;
+    }
+
+    public void setTrip(List<Trip> trip) {
+        this.trip = trip;
     }
 
     public User getUser() {
@@ -87,11 +96,11 @@ public class Bus {
         this.onTrip = onTrip;
     }
 
-    public List<Trip> getTrip() {
-        return trip;
-    }
-
-    public void setTrip(List<Trip> trip) {
-        this.trip = trip;
-    }
+//    public List<Trip> getTrip() {
+//        return trip;
+//    }
+//
+//    public void setTrip(List<Trip> trip) {
+//        this.trip = trip;
+//    }
 }
