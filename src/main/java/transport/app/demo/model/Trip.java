@@ -25,16 +25,21 @@ public class Trip {
     @NotBlank(message = "Arrival is required")
     private String arrival;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private Date leaveDate;
-
     @NotNull(message = "Include a price")
     private Double price;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date leaveDate;
+
     private boolean complete = false;
 
-    @ManyToMany
-    private List<Bus> bus = new ArrayList<Bus>();
+//    @ManyToMany
+//    private List<Bus> bus = new ArrayList<Bus>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "bus_id")
+    @JsonIgnore
+    private Bus bus;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -62,11 +67,11 @@ public class Trip {
         return price;
     }
 
-    public List<Bus> getBus() {
+    public Bus getBus() {
         return bus;
     }
 
-    public void setBus(List<Bus> bus) {
+    public void setBus(Bus bus) {
         this.bus = bus;
     }
 

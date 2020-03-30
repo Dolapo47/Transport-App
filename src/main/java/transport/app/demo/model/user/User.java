@@ -45,17 +45,14 @@ public class User extends DateAudit {
     List<Role> roles;
 
     @OneToMany(cascade = CascadeType.REFRESH,  mappedBy = "user", orphanRemoval = true)
-//    @Column(name = "user_id")
     @JsonIgnore
     private List<Booking> booking = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.REFRESH,  mappedBy = "user", orphanRemoval = true)
-//    @Column(name = "user_id")
     @JsonIgnore
     private List<Trip> trip = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.REFRESH,  mappedBy = "user", orphanRemoval = true)
-//    @Column(name = "user_id")
     @JsonIgnore
     private List <Complaint> complaint = new ArrayList<>();
 
