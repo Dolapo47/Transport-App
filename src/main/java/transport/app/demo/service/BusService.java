@@ -78,6 +78,7 @@ public class BusService {
         busRepository.delete(foundBus.get());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ArrayList<Bus> viewAllAvailableBus(){
         ArrayList<Bus> availableBuses = busRepository.findBusesByOnTrip(false);
         if(availableBuses.size() < 1){
@@ -86,6 +87,7 @@ public class BusService {
         return availableBuses;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ArrayList<Bus> viewAllUnavailableBus(){
         ArrayList<Bus> unAvailableBuses = busRepository.findBusesByOnTrip(true);
         if(unAvailableBuses.size() < 1){

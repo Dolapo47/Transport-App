@@ -12,6 +12,7 @@ import transport.app.demo.service.TripService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/trip")
@@ -38,6 +39,24 @@ public class TripController {
         ArrayList<Trip> trips = tripService.viewAllTrips();
         Response<ArrayList<Trip>> response = new Response<>(HttpStatus.OK);
         response.setMessage("Retrieved all trips");
+        response.setData(trips);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/view-available-trips")
+    public ResponseEntity<?>viewAvailableTrips(){
+        List<Trip> trips = tripService.viewAvailableTrips();
+        Response<List<Trip>> response = new Response<>(HttpStatus.OK);
+        response.setMessage("Retrieved all available trips");
+        response.setData(trips);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/view-unavailable-trips")
+    public ResponseEntity<?>viewUnavailableTrips(){
+        List<Trip> trips = tripService.viewUnAvailableTrips();
+        Response<List<Trip>> response = new Response<>(HttpStatus.OK);
+        response.setMessage("Retrieved all unavailable trips");
         response.setData(trips);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

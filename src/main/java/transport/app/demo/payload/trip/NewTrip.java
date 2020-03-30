@@ -1,7 +1,10 @@
 package transport.app.demo.payload.trip;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class NewTrip {
@@ -12,7 +15,13 @@ public class NewTrip {
     @NotBlank(message = "Arrival is required")
     private String arrival;
 
+    @NotNull(message = "Include a date for the trip")
+
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date leaveDate;
+
+    @NotNull(message = "include a price for the trip")
+    private Double price;
 
     private boolean isComplete = false;
 
@@ -22,6 +31,14 @@ public class NewTrip {
 
     public void setLeave(String leave) {
         this.leave = leave;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public String getArrival() {

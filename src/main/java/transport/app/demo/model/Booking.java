@@ -5,6 +5,8 @@ import transport.app.demo.model.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "booking")
@@ -22,8 +24,9 @@ public class Booking {
     @JsonIgnore
     private Trip trip;
 
-    @NotBlank
-    private int price;
+    @NotEmpty(message = "price is needed")
+    @NotNull
+    private double price = 0.00;
 
     public Booking() {
     }
@@ -52,11 +55,11 @@ public class Booking {
         this.trip = trip;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }

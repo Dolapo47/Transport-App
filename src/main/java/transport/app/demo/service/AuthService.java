@@ -20,8 +20,8 @@ import transport.app.demo.model.user.User;
 import transport.app.demo.repository.UserRepository;
 import transport.app.demo.security.JwtTokenProvider;
 import transport.app.demo.util.EmailSender;
-
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,7 +43,9 @@ public class AuthService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository, JwtTokenProvider jwtTokenProvider, BCryptPasswordEncoder bCryptPasswordEncoder, EmailSender emailSender) {
+    public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository,
+                       JwtTokenProvider jwtTokenProvider,
+                       BCryptPasswordEncoder bCryptPasswordEncoder, EmailSender emailSender) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.jwtTokenProvider = jwtTokenProvider;
@@ -68,7 +70,8 @@ public class AuthService {
                         "You just created an account with The Transport-App \n" +
                         "You are required to use the following link to verify your account\n" + url + "\n"  +
                         " –Please disregard if it wasn't you";
-        emailSender.sendEmail(newUser.getUsername(), "Transport-App Registration Verification", message);
+        emailSender.sendEmail(newUser.getUsername(),
+                "Transport-App Registration Verification", message);
     }
 
     public void signInUser(String username, String password, HttpServletResponse response){
