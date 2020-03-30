@@ -1,10 +1,12 @@
 package transport.app.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import transport.app.demo.model.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,11 +25,13 @@ public class Trip {
     @NotBlank(message = "Arrival is required")
     private String arrival;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date leaveDate;
 
+    @NotNull(message = "Include a price")
     private Double price;
 
-    private boolean isComplete = false;
+    private boolean complete = false;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -57,6 +61,14 @@ public class Trip {
     private List<Bus> newBus;
 
     public Trip() {
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getPrice() {
+        return price;
     }
 
     public List<Bus> getNewBus() {
@@ -116,11 +128,11 @@ public class Trip {
     }
 
     public boolean isComplete() {
-        return isComplete;
+        return complete;
     }
 
     public void setComplete(boolean complete) {
-        isComplete = complete;
+        this.complete = complete;
     }
 
     public void setLeave(String leave) {

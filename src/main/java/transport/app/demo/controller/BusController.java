@@ -26,6 +26,8 @@ public class BusController {
     public ResponseEntity<?> createBus(@Valid @RequestBody Bus bus, HttpServletRequest request){
         busService.createBus(bus, request);
         Response<Bus> response = new Response<>(HttpStatus.CREATED);
+        response.setMessage("Successfully created a bus");
+        response.setData(bus);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

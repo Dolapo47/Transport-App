@@ -16,6 +16,7 @@ import transport.app.demo.security.JwtTokenProvider;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,7 +49,9 @@ public class TripService {
         trip.setLeave(newTrip.getLeave());
         trip.setArrival(newTrip.getArrival());
         trip.setLeaveDate(newTrip.getLeaveDate());
+        trip.setPrice(newTrip.getPrice());
         trip.setUser(user);
+
         return tripRepository.save(trip);
     }
 
@@ -107,9 +110,9 @@ public class TripService {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ArrayList viewAvailableTrips(){
-    ArrayList completedTrips;
-    completedTrips = tripRepository.findAllByComplete(false);
+    public List viewAvailableTrips(){
+    List completedTrips;
+    completedTrips = tripRepository.findAllByComplete(true);
     if(completedTrips.size() < 1){
         throw new AppException("No available trips found", HttpStatus.NOT_FOUND);
     }
@@ -117,8 +120,8 @@ public class TripService {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ArrayList viewUnAvailableTrips(){
-        ArrayList incompleteTrips;
+    public List viewUnAvailableTrips(){
+        List incompleteTrips;
         incompleteTrips = tripRepository.findAllByComplete(false);
         if(incompleteTrips.size() < 1){
             throw new AppException("No unavailable trips found", HttpStatus.NOT_FOUND);
